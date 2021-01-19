@@ -1,7 +1,15 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
+import { AuthContext, useAuthState } from '../context/AuthContext';
 
 function Home() {
+  const { isAuthenticated } = useAuthState();
+  console.log(isAuthenticated);
+
+  // const authState = useContext(AuthContext);
+  // const isAuthenticated = authState.user !== null && authState.status === 'done';
+  // console.log(isAuthenticated);
+
   return (
     <>
       <h1>Homepagina</h1>
