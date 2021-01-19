@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import { ReactComponent as Spinner} from '../assets/refresh.svg';
 
 function SignUp() {
   // state voor invoervelden (omdat het formulier met Controlled Components werkt!)
@@ -10,8 +11,12 @@ function SignUp() {
 
   // state voor gebruikers-feedback
   const [createUserSuccess, setCreateUserSuccess] = useState(false);
+  const [loading, toggleLoading] = useState(false);
+  const [error, setError] = useState('');
 
   async function onSubmit(event) {
+    toggleLoading(true);
+    setError('');
     // Dit alleen omdat we controlled components gebruiken, React-hook-form hoeft dit niet
     event.preventDefault();
 
@@ -23,19 +28,22 @@ function SignUp() {
         password: password,
         role: ["user"],
       });
-
-      // // 2. Kijk goed wat je terugkrijgt!
+      // 2. Kijk goed wat je terugkrijgt!
       console.log(response.data);
-
 
       if (response.status === 200) {
         // 3. Als het is gelukt, willen we in DIT component opslaan dat het gelukt is
         setCreateUserSuccess(true);
-
       }
     } catch(e) {
       console.error(e);
+      if (e.message.includes('400')) {
+        setError('Er bestaat al een account met deze gebruikersnaam');
+      } else {
+        setError('Er is iets misgegaan bij het verzenden. Probeer het opnieuw');
+      }
     }
+    toggleLoading(false);
   }
 
   return (
@@ -75,12 +83,15 @@ function SignUp() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}/>
         </label>
+        {/*Zorg dat de gebruiker niet nog een keer kan klikken terwijl we een request maken*/}
         <button
           type="submit"
           className="form-button"
+          disabled={loading}
         >
-          Maak account aan
+          {loading ? <Spinner className="loading-icon" /> : 'Maak account aan'}
         </button>
+        {error & <p>{error}</p>}
       </form>
       <p>Heb je al een account? Je kunt je <Link to="/signin">hier</Link> inloggen.</p>
     </>
