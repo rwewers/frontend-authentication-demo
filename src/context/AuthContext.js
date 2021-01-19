@@ -24,8 +24,36 @@ function AuthContextProvider({ children }) {
     }, 2000)
   }, []);
 
+  function login(data) {
+    // 1. de token willen we in de local storage zetten
+    localStorage.setItem('token', data.accessToken);
+
+    // 2. de user-informatie willen we in de context zetten
+    setAuthState({
+      ...authState,
+      user: {
+        username: data.username,
+        email: data.email,
+        roles: data.roles,
+      }
+    })
+
+    // 3. als dat allemaal gelukt is, willen we doorgelinkt worden naar de profielpagina!
+    // Dit doen we in het component dat deze functie aanroept, zelf!
+  }
+
+  function logout() {
+    // doe dingen
+  }
+
+  // const providerData = {
+  //   ...authState,
+  //   login,
+  //   logout,
+  // }
+
   return (
-    <AuthContext.Provider value={authState}>
+    <AuthContext.Provider value={{ ...authState, login, logout }}>
       {authState.status === 'done' && children}
       {authState.status === 'pending' && <p>Loading...</p>}
     </AuthContext.Provider>
@@ -40,7 +68,7 @@ function useAuthState() {
   const isDone = authState.status === 'done';
   const isAuthenticated = authState.user !== null && isDone;
 
-  console.log('Ik ben authenticated:', isAuthenticated);
+  // console.log('Ik ben authenticated:', isAuthenticated);
 
   return {
     ...authState,
