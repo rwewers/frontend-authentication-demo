@@ -24,7 +24,7 @@ function SignIn() {
   }, [isAuthenticated]);
 
   async function onSubmit(event) {
-    // deze hoeft alleen als je controlled components gebruikt
+    // Als je react-hook-form gebruikt hoeft dit niet, dat gebeurt dan automatisch
     event.preventDefault();
 
     try {

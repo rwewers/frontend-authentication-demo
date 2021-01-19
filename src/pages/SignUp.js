@@ -17,7 +17,7 @@ function SignUp() {
   async function onSubmit(event) {
     toggleLoading(true);
     setError('');
-    // Dit alleen omdat we controlled components gebruiken, React-hook-form hoeft dit niet
+    // Als je react-hook-form gebruikt hoeft dit niet, dat gebeurt dan automatisch
     event.preventDefault();
 
     try {
@@ -32,7 +32,7 @@ function SignUp() {
       console.log(response.data);
 
       if (response.status === 200) {
-        // 3. Als het is gelukt, willen we in DIT component opslaan dat het gelukt is
+        // 3. Als het is gelukt, willen we in DIT component (SignUp) opslaan dat het gelukt is
         setCreateUserSuccess(true);
       }
     } catch(e) {
@@ -91,7 +91,7 @@ function SignUp() {
         >
           {loading ? <Spinner className="loading-icon" /> : 'Maak account aan'}
         </button>
-        {error & <p>{error}</p>}
+        {error && <p>{error}</p>}
       </form>
       <p>Heb je al een account? Je kunt je <Link to="/signin">hier</Link> inloggen.</p>
     </>
