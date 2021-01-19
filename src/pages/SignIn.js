@@ -2,6 +2,7 @@ import React, { useState, useContext, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import axios from 'axios';
 import { AuthContext, useAuthState } from '../context/AuthContext';
+import { ReactComponent as Spinner } from '../assets/refresh.svg';
 
 function SignIn() {
   // context-functies
@@ -11,6 +12,10 @@ function SignIn() {
   // state voor invoervelden (omdat het formulier met Controlled Components werkt!)
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+
+  // state voor gebruikersfeedback
+  const [loading, toggleLoading] = useState(false);
+  const [error, setError] = useState('');
 
   // react-router dingen
   const history = useHistory();
@@ -24,6 +29,8 @@ function SignIn() {
   }, [isAuthenticated]);
 
   async function onSubmit(event) {
+    toggleLoading(true);
+    setError('');
     // Als je react-hook-form gebruikt hoeft dit niet, dat gebeurt dan automatisch
     event.preventDefault();
 
@@ -39,7 +46,10 @@ function SignIn() {
     } catch(e) {
       // Gaat het mis? Log het in de console!
       console.error(e);
+      setError('Inloggen is mislukt');
+      // Tip: als de gebruikersnaam niet bestaat of wachtwoord is verkeerd, stuurt de backend een 401!
     }
+    toggleLoading(false);
   }
 
   return (
@@ -69,9 +79,11 @@ function SignIn() {
         <button
           type="submit"
           className="form-button"
+          disabled={loading}
         >
-          Inloggen
+          {loading ? <Spinner className="loading-icon" /> : 'Maak account aan'}
         </button>
+        {error && <p>{error}</p>}
       </form>
       <p>Heb je nog geen account? <Link to="/signup">Registreer</Link> je dan eerst.</p>
     </>
