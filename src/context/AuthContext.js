@@ -26,17 +26,20 @@ function AuthContextProvider({ children }) {
 
   return (
     <AuthContext.Provider value={authState}>
+      {/*Hebben we alles gecheckt? Laat dan de applicatie zien*/}
       {authState.status === 'done' && children}
+      {/*Zijn we nog bezig met verifieren? Dan gaan we ook de applicatie niet laden!*/}
       {authState.status === 'pending' && <p>Loading...</p>}
     </AuthContext.Provider>
   );
 }
 
 function useAuthState() {
+  // Deze functie staat los van de context, dus moet zelf context nog ophalen
   const authState = useContext(AuthContext);
 
   // iemand is geauthoriseerd wanneer de status === 'done'
-  // en als er een gebruiker in de authState staat
+  // EN als er een gebruiker in de authState staat
   const isDone = authState.status === 'done';
   const isAuthenticated = authState.user !== null && isDone;
 
