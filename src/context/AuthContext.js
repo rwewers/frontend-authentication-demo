@@ -46,11 +46,12 @@ function AuthContextProvider({ children }) {
     // doe dingen
   }
 
+  // als je hem helemaal uit zou schrijven en als variabele mee zou geven aan AuthContext.Provider:
   // const providerData = {
   //   ...authState,
-  //   login,
-  //   logout,
-  // }
+  //   login: login,
+  //   logout: logout,
+  // };
 
   return (
     <AuthContext.Provider value={{ ...authState, login, logout }}>
