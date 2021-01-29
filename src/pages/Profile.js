@@ -5,6 +5,11 @@ import { useAuthState } from '../context/AuthContext';
 function Profile() {
   const { user } = useAuthState();
 
+  // Wil je beschermde data uitlezen?
+  // Dan zet je hier weer een useEffect met lege [] dependency array
+  // asynchrone functie met try/catch
+  // Maar in het request stuur je de token die in de local storage staat, mee!
+
   return (
     <>
       <h1>Profielpagina</h1>

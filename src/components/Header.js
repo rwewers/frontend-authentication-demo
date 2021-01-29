@@ -9,11 +9,11 @@ function Header() {
   const { isAuthenticated } = useAuthState();
   const { logout } = useContext(AuthContext);
 
-  useEffect(() => {
-    if (isAuthenticated === false) {
-      history.push('/signin');
-    }
-  }, [isAuthenticated]);
+  // useEffect(() => {
+  //   if (isAuthenticated === false) {
+  //     history.push('/signin');
+  //   }
+  // }, [isAuthenticated]);
 
   return (
     <header>

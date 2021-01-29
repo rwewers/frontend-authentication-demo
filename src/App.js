@@ -1,29 +1,34 @@
 import React from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, Redirect } from 'react-router-dom';
 import Header from './components/Header';
 import Profile from './pages/Profile';
 import Home from './pages/Home';
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
+import PrivateRoute from './routing/PrivateRoute';
 import './App.css';
 
 function App() {
   return (
     <>
-      <Header />
+      <Header/>
       <div className="content">
         <Switch>
           <Route exact path="/">
-            <Home />
+            <Home/>
           </Route>
-          <Route path="/profile">
+          {/*Als je geen specifieke private route maakt, kan je hem ook zo opschrijven*/}
+          {/*<Route path="/profile">*/}
+          {/*  {isAuthenticated ? <Profile /> : <Redirect to="/signin" />}*/}
+          {/*</Route>*/}
+          <PrivateRoute exact path="/profile">
             <Profile />
-          </Route>
+          </PrivateRoute>
           <Route path="/signin">
-            <SignIn />
+            <SignIn/>
           </Route>
           <Route path="/signup">
-            <SignUp />
+            <SignUp/>
           </Route>
         </Switch>
       </div>
