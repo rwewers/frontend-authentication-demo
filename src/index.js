@@ -4,11 +4,14 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import {AuthContextProvidor} from "./context/AuthContext";
 
 ReactDOM.render(
   <React.StrictMode>
     <Router>
-      <App />
+        <AuthContextProvidor>
+             <App />
+        </AuthContextProvidor>
     </Router>
   </React.StrictMode>,
   document.getElementById('root')
