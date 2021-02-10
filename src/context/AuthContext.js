@@ -20,9 +20,35 @@ function AuthContextProvidor({ children }){
         }, 2000)
     }, []);
 
+    function logout(){
+
+    }
+
+    function login(data){
+       // console.log(data);
+        localStorage.setItem('data', data.accessToken);
+
+        setAuthState( {
+            ...authState,
+            user: {
+                username: data.username,
+                email: data.email,
+                roles: data.roles,
+            }
+        })
+
+
+    }
+
+    const providorData = {
+        ...authState,
+        login,
+        logout,
+
+    }
     return(
 
-        <AuthContext.Provider value={authState}>
+        <AuthContext.Provider value={providorData}>
             {authState.status === 'done' && children}
             {authState.status === 'pending' && <p>Loading...</p>}
         </AuthContext.Provider>
@@ -35,7 +61,6 @@ function useAuthState(){
     const isDone = authState.status === 'done';
     const isAuthenticated =   authState.user !== null && isDone;
 
-    console.log('Ik ben authenticated', isAuthenticated);
 
     return{
         ...authState,
