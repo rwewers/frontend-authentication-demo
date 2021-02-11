@@ -24,8 +24,31 @@ function AuthContextProvider({ children }) {
     }, 2000)
   }, []);
 
+  function login(data){
+    localStorage.setItem('token', data.accessToken);
+
+    setAuthState({
+      ...authState,
+      user: {
+        username: data.username,
+        email: data.email,
+        roles: data.roles,
+      }
+    })
+
+    }
+    function logout(){
+
+
+  }
+  const providorData ={
+    ...authState,
+    login,
+    logout,
+  }
+
   return (
-    <AuthContext.Provider value={authState}>
+    <AuthContext.Provider value={providorData}>
       {/*Hebben we alles gecheckt? Laat dan de applicatie zien*/}
       {authState.status === 'done' && children}
       {/*Zijn we nog bezig met verifieren? Dan gaan we ook de applicatie niet laden!*/}
@@ -51,8 +74,8 @@ function useAuthState() {
   }
 }
 
-export {
+export{
   AuthContext,
-  useAuthState,
-  AuthContextProvider,
+    useAuthState,
+    AuthContextProvider,
 }

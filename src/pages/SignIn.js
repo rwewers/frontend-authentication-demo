@@ -1,12 +1,36 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useContext, useEffect } from 'react';
+import { Link, useHistory } from 'react-router-dom';
+import axios from "axios";
+import { AuthContext, useAuthState } from '../context/AuthContext';
 
 function SignIn() {
+  const { login } = useContext(AuthContext);
+  const { isAuthenticated } = useAuthState();
+
+  const history = useHistory();
+
+  useEffect( ()=> {
+    if(isAuthenticated === true){
+     history.push('/profile');
+    }
+  }, [isAuthenticated]);
+
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-  function onSubmit() {
-    console.log(username, password);
+  async function onSubmit(event) {
+    event.preventDefault();
+
+    try{
+      const response = await axios.post('https://polar-lake-14365.herokuapp.com/api/auth/signin', {
+    username: username,
+        password: password,
+      })
+
+     login(response.data);
+    } catch (e){
+      console.log(e);
+    }
   }
 
   return (
